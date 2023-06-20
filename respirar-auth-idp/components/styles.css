@@ -1,0 +1,40 @@
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #38a2df;
+    color: #333;
+    padding: 1px;
+    text-align: center;
+    font-size: 13px;
+    display: table;
+    align-items: center;
+ 
+   
+    
+  }
+
+  .textoFooter{
+
+   
+    text-align: center;
+        
+  }
+
+  .form-container {
+    border: 3px solid #161515;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #53a4db83;
+  }
+
+  .error-modal ul {
+    padding-left: 0px;  /* Adjust this value to increase/decrease the space between the bullet and the content */
+  }
+  
+  .error-modal li {
+    
+    margin-left: 60px; /* Adjust this value to move the bullet further to the right */
+  }

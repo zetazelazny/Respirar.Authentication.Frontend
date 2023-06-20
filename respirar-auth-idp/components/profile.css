@@ -1,0 +1,123 @@
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  
+  .profile-section {
+    margin-bottom: 30px;
+  }
+  
+  .profile-label {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .profile-value {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .roles-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .roles-list {
+    margin-top: 20px;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .profile-role-name {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .profile-permission-list {
+    list-style-type: none;
+    margin-left: 20px;
+    margin-top: 5px;
+    padding-left: 0;
+  }
+  
+  .profile-permission {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .profile-permission-list li::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #0078d4;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  .profile-permission-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .action-buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .password-button,
+  .delete-button {
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .password-button {
+    background-color: #0078d4;
+  }
+  
+  .password-button:hover {
+    background-color: #005a9e;
+  }
+  
+  .delete-button {
+    background-color: #e74c3c;
+  }
+  
+  .delete-button:hover {
+    background-color: #c0392b;
+  }
+  
+  .password-button:focus,
+  .delete-button:focus {
+    outline: none;
+  }
+  
+  
