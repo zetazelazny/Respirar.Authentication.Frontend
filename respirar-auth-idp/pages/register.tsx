@@ -187,7 +187,7 @@ const Register: React.FC = () => {
           ariaHideApp={false}
         >
           <h4>Registro exitoso</h4>
-          <p>Haga click abajo para ingresar</p>
+          <p>Verifique su casilla de correo para finalizar el proceso.</p>
           <button className="btn btn-primary" onClick={() => onClickPopupSuccess()}>
             Regresar
           </button>
