@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/router';
 import { SessionContext } from '@/components/session-provider';
 import { environment } from '@/environments/env';
+import Footer from "@/components/footer";
 
 interface PasswordChangeProps {
   // Add any props if needed
@@ -114,11 +115,11 @@ function PasswordChange({}: PasswordChangeProps) {
   return (
     <div>
       <Navbar />
-      <form onSubmit={handleSubmit}>
-        <div className="row ">
-          <div className="d-flex justify-content-center mt-5 align-items-center mx-auto col-10 col-md-8 col-lg-2">
-            <div className="register-form">
-              <h3 className="form-title">Cambio de Contraseña</h3>
+      <div className="container">
+        <form onSubmit={handleSubmit} className="mb-5">
+          <div className="d-flex justify-content-center mt-5 align-items-center mx-auto col-10 col-md-8 col-lg-6">
+            <div className="form-container register-form">
+              <h3 className="form-title d-flex justify-content-center">Cambio de Contraseña</h3>
               {errores.length > 0 && (
                 <ul className="alert alert-danger">
                   {errores.map((item, index) => (
@@ -128,11 +129,10 @@ function PasswordChange({}: PasswordChangeProps) {
               )}
               <div>
                 <div className="form-group row mt-4">
-                  <label htmlFor="currentPassword">Contraseña Actual</label>
-                  <input
-                    type="password"
-                    id="currentPassword"
-                    className="form-control"
+                  <div className="d-flex justify-content-center"> 
+                    <label htmlFor="currentPassword">Contraseña Actual</label>
+                  </div>
+                  <input type="password" id="currentPassword" className="form-control mt-2"
                     value={currentPassword}
                     onChange={handleCurrentPasswordChange}
                   />
@@ -140,36 +140,41 @@ function PasswordChange({}: PasswordChangeProps) {
               </div>
               <div>
                 <div className="form-group row mt-4">
-                  <label htmlFor="newPassword">Contraseña Nueva</label>
-                  <input
-                    type="password"
-                    id="newPassword"
-                    className="form-control"
+                  <div className="d-flex justify-content-center"> 
+                    <label htmlFor="newPassword">Contraseña Nueva</label>
+                  </div>
+                  <input type="password" id="newPassword" className="form-control mt-2"
                     value={newPassword}
                     onChange={handleNewPasswordChange}
                   />
                 </div>
               </div>
               <div>
-                <div className="form-group row mt-4">
-                  <label htmlFor="confirmPassword">Confirmar Contraseña</label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    className="form-control"
+                <div className="form-group row mt-4 mb-4">
+                  <div className="d-flex justify-content-center"> 
+                    <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+                  </div>
+                  <input type="password" id="confirmPassword" className="form-control mt-2"
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
                   />
                 </div>
               </div>
-              <button className="btn btn-primary mt-4" type="submit">
-                Confirmar
-              </button>
-              <button className="btn btn-primary mt-4" onClick={returnProfile}> Cancelar </button>
+              <div className="change-password-button">
+                <div className="row"> 
+                  <div className="col d-flex justify-content-start mt-3"> 
+                    <button className="btn btn-primary mt-4" type="submit"> Confirmar </button>
+                  </div>
+                  <div className="col d-flex justify-content-end mt-3">
+                    <button className="btn btn-primary mt-4" onClick={returnProfile}> Cancelar </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+      <Footer/>
     </div>
   );
 }

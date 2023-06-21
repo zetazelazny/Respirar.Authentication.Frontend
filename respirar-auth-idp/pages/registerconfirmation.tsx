@@ -1,7 +1,10 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { environment } from '@/environments/env';
-``
+import Navbar from '../components/navbar'
+import Footer from "@/components/footer";
+
+
 const RegisterConfirmation: React.FC = () => {
     const router = useRouter();
     const [validationResponse, setValidationResponse] = useState(false);
@@ -45,8 +48,8 @@ const RegisterConfirmation: React.FC = () => {
       
     }, [router.query]);
       
-    const handleRedirection = () => {
-        router.push("/profile/")
+    const handleIngresar = () => {
+        router.push("/login/")
     }
 
     if (!validationResponse) {
@@ -58,13 +61,19 @@ const RegisterConfirmation: React.FC = () => {
       }
       else{
         return (
-          <div>
-            <div>
-                Su registro ha sido confirmado exitosamente
+          <div> 
+          <Navbar />
+          <div className="d-flex justify-content-center mt-5 align-items-center mx-auto col-10 col-md-8 col-lg-6 ">
+            <div className="form-container register-form">
+            <div className='mt-2'>
+                ¡Su registro ha sido confirmado exitosamente!
             </div>
             <div>
-                <a onClick={handleRedirection}>Haga click aqui para ver su perfil</a>
+            <button onClick={handleIngresar} className="btn btn-primary justify-content-center"> Ingresar </button>
             </div>
+          </div>
+          </div>
+          <Footer/>
           </div>
         );
       }

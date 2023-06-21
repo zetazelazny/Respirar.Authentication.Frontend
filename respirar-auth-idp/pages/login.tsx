@@ -153,12 +153,13 @@ const Login: React.FC = () => {
                 </div>
               </form>
               <div>
-                <p onClick={handleRecoverPassword} className="d-flex justify-content-center mt-4"><u> ¿Olvidaste la contraseña?</u></p>
+                <p role="button" onClick={handleRecoverPassword} className="d-flex justify-content-center mt-4"><u> ¿Olvidaste la contraseña?</u></p>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

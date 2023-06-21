@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Modal from 'react-modal';
 import '../components/styles.css';
 import { environment } from "@/environments/env";
+import Footer from "@/components/footer";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -131,8 +132,10 @@ const Login: React.FC = () => {
             Regresar
           </button>
         </Modal>
+        <Footer/>
     </div>
   );
 };
 
 export default Login;
+

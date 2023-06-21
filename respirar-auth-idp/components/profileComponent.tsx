@@ -65,11 +65,14 @@ const ProfileComponent: React.FC<ProfileProps> = ({ username, roles }) => {
   return (
     <div>
       <Navbar />
-      <div className="profile-container">
-        <h2 className="profile-title">Perfil</h2>
+      <div className="profile-container mt-4">
+        <h2 className="d-flex justify-content-center profile-title">Perfil</h2>
         <div className="profile-section">
           <div className="profile-label">Correo</div>
-          <div className="profile-value">{username}</div>
+          <div className="profile-value card">
+            <div className='ms-2'>{username} </div>
+            
+          </div>
         </div>
         <div className="roles-card">
           <div className="profile-label">Roles</div>
@@ -88,12 +91,18 @@ const ProfileComponent: React.FC<ProfileProps> = ({ username, roles }) => {
           </div>
         </div>
         <div className="change-password-button">
+          <div className="row"> 
+          <div className="col d-flex justify-content-start mt-3"> 
           <button onClick={handleChangePassword} className="btn btn-primary">
             Cambiar contraseña
           </button>
-          <button onClick={handleDeleteUser} className="btn btn-danger">
+          </div>
+          <div className="col d-flex justify-content-end mt-3">
+          <button onClick={handleDeleteUser} className="btn btn-danger text-right">
             Borrar usuario
           </button>
+          </div>
+          </div>
         </div>
         <div>
           <Modal
@@ -103,12 +112,18 @@ const ProfileComponent: React.FC<ProfileProps> = ({ username, roles }) => {
             ariaHideApp={false}
           >
             <h4>¿Está seguro que desea eliminar la cuenta?</h4>
+            <div className='row'> 
+            <div className="col d-flex justify-content-start mt-4 ms-5">
             <button className="btn btn-primary" onClick={() => onClickModalVolver()}>
               Regresar
             </button>
+            </div>
+            <div className="col d-flex justify-content-end mt-4 me-5">
             <button className="btn btn-danger" onClick={() => onClickModalEliminar()}>
               Eliminar
             </button>
+            </div>
+            </div>
           </Modal>
         </div>
       </div>

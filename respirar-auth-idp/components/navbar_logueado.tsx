@@ -15,7 +15,7 @@ const Navbar = () => {
       </div>
      <span className="navbar-brand mb-0 ms-3 h1">Respir.AR</span>
      <div className="navbar-nav flex-row ms-auto">
-        <button className="btn btn-primary align-items-end" onClick={handleClick}> Logout </button>
+        <button className="btn btn-primary align-items-end me-5 " onClick={handleClick}> Logout </button>
      </div>
     </nav>
   );

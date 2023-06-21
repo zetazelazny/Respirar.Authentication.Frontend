@@ -3,6 +3,7 @@ import { SessionContext } from '@/components/session-provider';
 import { useRouter } from 'next/router';
 import React, { useContext, useState, useEffect } from 'react';
 import { environment } from '@/environments/env';
+import Footer from "@/components/footer";
 
 const App: React.FC = () => {
   const { isAuthenticated } = useContext(SessionContext);
@@ -43,7 +44,10 @@ const App: React.FC = () => {
 
   return (
     <div>
+    <div>
       <ProfileComponent username={profileData.username} roles={arrayRoles} />
+    </div>
+    <Footer/>
     </div>
   );
 };
