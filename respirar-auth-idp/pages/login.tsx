@@ -118,6 +118,12 @@ const Login: React.FC = () => {
     router.push("/recoverpassword")
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <div className="">
       <Navbar />

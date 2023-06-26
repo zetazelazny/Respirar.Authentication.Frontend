@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -7,15 +7,29 @@ import '../components/styles.css';
 import Footer from '@/components/footer';
 import { environment } from '@/environments/env';
 
+interface FormState {
+  username: string;
+  password: string;
+  confirmPassword: string;
+  errores: string[];
+  submitted: boolean;
+  isOpenSuccess: boolean;
+  disabled: boolean;
+  loading: boolean;
+}
+
 const Register: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [errores, setErrores] = useState<string[]>([]);
-  const [submitted, setSubmitted] = useState(false); // New flag
-  const [isOpenSuccess, setIsOpenSuccess] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const [loading, setLoading] = useState(false); // Add a new state variable for loading
+  const [formState, setFormState] = useState<FormState>({
+    username: '',
+    password: '',
+    confirmPassword: '',
+    errores: [],
+    submitted: false,
+    isOpenSuccess: false,
+    disabled: false,
+    loading: false,
+  });
+
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   const uppercaseRegExp = /(?=.*?[A-Z])/;
   const lowercaseRegExp = /(?=.*?[a-z])/;
@@ -38,60 +52,80 @@ const Register: React.FC = () => {
     },
   };
 
-  function validate() {
+  const validate = useCallback(() => {
     const newErrores: string[] = [];
 
-    if (!emailRegex.test(username)) {
+    if (!emailRegex.test(formState.username)) {
       newErrores.push('Correo inválido');
     }
 
-    if (password === '') {
+    if (formState.password === '') {
       newErrores.push('Ingrese una contraseña');
     } else {
-      if (!uppercaseRegExp.test(password)) {
+      if (!uppercaseRegExp.test(formState.password)) {
         newErrores.push('La contraseña debe tener al menos una mayúscula');
       }
-      if (!lowercaseRegExp.test(password)) {
+      if (!lowercaseRegExp.test(formState.password)) {
         newErrores.push('La contraseña debe tener al menos una minúscula');
       }
-      if (!digitsRegExp.test(password)) {
+      if (!digitsRegExp.test(formState.password)) {
         newErrores.push('La contraseña debe tener al menos un número');
       }
-      if (!specialCharRegExp.test(password)) {
+      if (!specialCharRegExp.test(formState.password)) {
         newErrores.push('La contraseña debe tener al menos un caracter especial');
       }
-      if (!minLengthRegExp.test(password)) {
+      if (!minLengthRegExp.test(formState.password)) {
         newErrores.push('La contraseña debe tener al menos 8 caracteres');
       }
     }
 
-    if (password !== confirmPassword) {
+    if (formState.password !== formState.confirmPassword) {
       newErrores.push('Las contraseñas no coinciden');
     }
 
-    setErrores(newErrores);
-  }
+    setFormState((prevState) => ({
+      ...prevState,
+      errores: newErrores,
+    }));
+
+    return newErrores.length === 0;
+  }, [formState.username, formState.password, formState.confirmPassword]);
 
   useEffect(() => {
-    setDisabled(true);
-    if (submitted) {
+    setFormState((prevState) => ({
+      ...prevState,
+      disabled: true,
+    }));
+
+    if (formState.submitted) {
       validate();
     }
-    setDisabled(false);
-  }, [username, password, confirmPassword, submitted]);
+
+    setFormState((prevState) => ({
+      ...prevState,
+      disabled: false,
+    }));
+  }, [validate, formState.submitted]);
 
   const registerUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitted(true);
+    setFormState((prevState) => ({
+      ...prevState,
+      submitted: true,
+    }));
 
-    if (errores.length === 0 && username !== '' && password !== '' && confirmPassword !== '') {
+    if (validate()) {
       const body = {
-        username: username,
-        password: password,
+        username: formState.username,
+        password: formState.password,
       };
 
       try {
-        setLoading(true); // Set loading to true before making the request
+        setFormState((prevState) => ({
+          ...prevState,
+          loading: true,
+        }));
+
         const response = await fetch(environment.backendUrl + '/userregister', {
           method: 'POST',
           headers: {
@@ -100,27 +134,44 @@ const Register: React.FC = () => {
           },
           body: JSON.stringify(body),
         });
+
         const data = await response.json();
-        setIsOpenSuccess(true);
-        setSubmitted(false); // Reset the submitted flag
+
+        setFormState((prevState) => ({
+          ...prevState,
+          isOpenSuccess: true,
+          submitted: false,
+        }));
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false); // Set loading to false regardless of success or error
+        setFormState((prevState) => ({
+          ...prevState,
+          loading: false,
+        }));
       }
     }
   };
 
   const onClickPopupSuccess = () => {
-    setIsOpenSuccess(false);
+    setFormState((prevState) => ({
+      ...prevState,
+      isOpenSuccess: false,
+    }));
     router.push('/login');
   };
 
   useEffect(() => {
-    if (submitted) {
+    if (formState.submitted) {
       validate();
     }
-  }, [username, password, confirmPassword, submitted]);
+  }, [validate, formState.username, formState.password, formState.confirmPassword, formState.submitted]);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
 
   return (
     <div>
@@ -130,9 +181,9 @@ const Register: React.FC = () => {
           <div className="form-container register-form">
             <h2 className="d-flex justify-content-center">Registrese aquí</h2>
             <form onSubmit={registerUser}>
-              {errores.length > 0 && submitted && (
+              {formState.errores.length > 0 && formState.submitted && (
                 <ul className="alert alert-danger">
-                  {errores.map((item, index) => (
+                  {formState.errores.map((item, index) => (
                     <li key={index}> {item} </li>
                   ))}
                 </ul>
@@ -143,8 +194,13 @@ const Register: React.FC = () => {
                   <input
                     type="text"
                     className="form-control"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={formState.username}
+                    onChange={(e) =>
+                      setFormState((prevState) => ({
+                        ...prevState,
+                        username: e.target.value,
+                      }))
+                    }
                   />
                 </div>
               </div>
@@ -154,8 +210,13 @@ const Register: React.FC = () => {
                   <input
                     type="password"
                     className="form-control"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formState.password}
+                    onChange={(e) =>
+                      setFormState((prevState) => ({
+                        ...prevState,
+                        password: e.target.value,
+                      }))
+                    }
                   />
                 </div>
               </div>
@@ -165,14 +226,23 @@ const Register: React.FC = () => {
                   <input
                     type="password"
                     className="form-control"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={formState.confirmPassword}
+                    onChange={(e) =>
+                      setFormState((prevState) => ({
+                        ...prevState,
+                        confirmPassword: e.target.value,
+                      }))
+                    }
                   />
                 </div>
               </div>
               <div className="d-flex justify-content-center">
-                <button disabled={disabled || loading} type="submit" className="btn btn-primary mt-4">
-                  {loading ? 'Registrando...' : 'Registrarse'}
+                <button
+                  disabled={formState.disabled || formState.loading}
+                  type="submit"
+                  className="btn btn-primary mt-4"
+                >
+                  {formState.loading ? 'Registrando...' : 'Registrarse'}
                 </button>
               </div>
             </form>
@@ -181,14 +251,19 @@ const Register: React.FC = () => {
       </div>
       <div>
         <Modal
-          isOpen={isOpenSuccess}
-          onRequestClose={() => setIsOpenSuccess(false)}
+          isOpen={formState.isOpenSuccess}
+          onRequestClose={() =>
+            setFormState((prevState) => ({
+              ...prevState,
+              isOpenSuccess: false,
+            }))
+          }
           style={customStyles}
           ariaHideApp={false}
         >
           <h4>Registro exitoso</h4>
           <p>Verifique su casilla de correo para finalizar el proceso.</p>
-          <button className="btn btn-primary" onClick={() => onClickPopupSuccess()}>
+          <button className="btn btn-primary" onClick={onClickPopupSuccess}>
             Regresar
           </button>
         </Modal>

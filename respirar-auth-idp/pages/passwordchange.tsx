@@ -112,6 +112,12 @@ function PasswordChange({}: PasswordChangeProps) {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <div>
       <Navbar />

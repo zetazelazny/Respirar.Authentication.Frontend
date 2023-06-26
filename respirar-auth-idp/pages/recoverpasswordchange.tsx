@@ -4,6 +4,7 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/router';
 import { environment } from '@/environments/env';
+import Footer from "@/components/footer";
 
 
 interface PasswordChangeProps {
@@ -139,6 +140,12 @@ function PasswordChange({}: PasswordChangeProps) {
     setErrores([]);
   }, []);
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <div className="">
       <Navbar />
@@ -177,6 +184,7 @@ function PasswordChange({}: PasswordChangeProps) {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
